@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from numpy.linalg import norm
 # logistic regresion nueral network class
 class logisticRegressionNueralNet:
     
@@ -8,34 +9,41 @@ class logisticRegressionNueralNet:
         self.alpha = 0.1; # learning rate
         self.epsilon = 1;# epsilon
 
-        self.numberOfInstances, self.numberOfFeatures = trainingData.shape;
-        
+        self.numberOfInstances, numberOfFeatures = trainingData.shape;
+        self.numberOfFeatures = numberOfFeatures -1 # features are total x dim -1
+
         self.xFeatures = trainingData.loc[:, 1:] # index [1:] of every row
         self.y = trainingData.loc[:, 0] # index 0 of every row
-        self.biases = np.random.uniform(low=-1.0, high=1.0, size=(numberOfInstances,1)) # random bias between 1 and -1, for all instances
-        self.weights = np.random.uniform(low=-1.0, high=1.0, size=(numberOfFeatures,1)) # random weights between 1 and -1 based on all features
+        self.biases = np.random.uniform(low=-1.0, high=1.0, size=(self.numberOfInstances,1)) # random bias between 1 and -1, for all instances
+        self.weights = np.random.uniform(low=-1.0, high=1.0, size=(1, self.numberOfFeatures)) # random weights between 1 and -1 based on all features
         self.outputLayer = np.zeros((outputLayerSize, 1))
 
-        for i in range(numberOfInstances+1):
-            print(i)
+        print("weights size: " ,self.weights.shape)
+        print("xFeatures size: " , self.xFeatures.shape)
+        print("y size: " , self.y.shape)
+        print("biases size: " , self.biases.shape)
+        # for i in range(numberOfInstances+1):
+        #     print(i)
 
     def getResults(self):
         return [self.weights, self.biases, self.outputLayer]
 
     #updates weights and biases
     def trainModel(self):
+        #evaluate ai
+        a_i = self.sigmoidActivation(self.prediction_A(self.weights, self.xFeatures, self.biases))
         
-        #while(currentCost - prevCost < episilon)
-            #evaluate ai
+        print(a_i)
+
+        # while(currentCost - prevCost < episilon)
 
             #compute gradient of cost_w
 
             #update the weights and biases w = w - self.alpha*(gradient_cost_w)
             # b = b = self.alpha*(gradient_cost_b)
 
-
+    #tests model with a set of x_features
     def testModel(self, features):
-
         # do some fancy math to update the outputLayer, PS: turns out not so fancy
         self.outputLayer = self.prediction_A(self.weights, features, self.biases)
 
@@ -45,7 +53,7 @@ class logisticRegressionNueralNet:
 
     # prediction ai
     def prediction_A(self, w, x, b):
-        return (np.dot(w,x)+b)
+        return (np.dot(w,x.T)+b)
 
     # sigmoid activation function
     def sigmoidActivation(self, x):
@@ -59,8 +67,8 @@ class logisticRegressionNueralNet:
         return ((y - a) * (y - a))
 
     # gradient of cost respect to w
-    def gradient_cost_w(self, y, a,):
-        return (1/(2*self.numberOfInstances)) * ((y - a) * ) 
+    # def gradient_cost_w(self, y, a,):
+        # return (1/(2*self.numberOfInstances)) * ((y - a) * )
 
 # delta_y computation: delta_w, delta_b
 
@@ -94,8 +102,11 @@ numberOfInstances, numberOfFeatures = mnistTest.shape;
 
 neuralNet = logisticRegressionNueralNet(mnistTest, 3, 10);
 
+neuralNet.trainModel()
+
 result = neuralNet.getResults();
 
-for x in result:
-    print(x);
+
+# for x in result:
+#     print(x);
 

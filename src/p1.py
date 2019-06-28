@@ -7,9 +7,9 @@ class logisticRegressionNueralNet:
     
     def __init__(self, trainingData, numberOfLayes, outputLayerSize):
 
-        self.alpha = 0.1; # learning rate
+        self.alpha = 1; # learning rate
         self.epsilon = 1;# epsilon
-        self.maxIter =1000
+        self.maxIter =10
         self.costs = [self.maxIter]
 
         self.numberOfInstances, numberOfFeatures = trainingData.shape;
@@ -72,7 +72,8 @@ class logisticRegressionNueralNet:
             grad_cost_w = self.gradient_cost_w(self.y, a_i, self.xFeatures)
 
             oldWeights = self.weights
-            # print(oldWeights)
+            print("self.weights" ,self.weights)
+            print("change to weight" , self.vect_scalar_multiplication(grad_cost_w, self.alpha))
             #update the weights and biases 
             self.weights = self.weights - self.vect_scalar_multiplication(grad_cost_w, self.alpha) #self.alpha*(grad_cost_w)
             self.biases = self.biases - self.vect_scalar_multiplication(self.gradient_cost_b(self.y, a_i), self.alpha) #self.alpha*(self.gradient_cost_b)
